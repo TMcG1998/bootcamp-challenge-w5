@@ -75,6 +75,19 @@ $(".time-block").on("blur", "textarea", function() {
     $(this).replaceWith(blockP);
 })
 
+// save the row corresponding to a button click
+$(".row .saveBtn").click(function() {
+    var id = $(this)
+    .attr('id');
+    id = id.charAt(id.length - 1);
+
+    var blockP = $("#row-" + id);
+
+    times[id - 1].task = blockP.text();
+    saveTimes();
+    console.log(times);
+})
+
 // loop to display each timeblock
 var displayTimeBlocks = function() {
     for(var i = 0; i < times.length; i++) {
@@ -84,9 +97,6 @@ var displayTimeBlocks = function() {
 
         var currentTimeBlock = $("#row-" + (i + 1).toString());
         currentTimeBlock.text(taskDesc);
-
-        console.log(currentTimeBlock.parent());
-
         // check the hour to update color of time block
         if(hourBlock < currentHour) {
             currentTimeBlock.parent().addClass("past");
@@ -97,6 +107,14 @@ var displayTimeBlocks = function() {
         }
 
     }
+}
+
+var saveTimes = function() {
+    localStorage.setItem("times", JSON.stringify(times));
+}
+
+var loadTime = function() {
+
 }
 
 displayTimeBlocks();
