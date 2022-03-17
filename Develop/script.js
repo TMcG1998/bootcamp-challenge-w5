@@ -4,44 +4,7 @@ var currentDayEl = $("#currentDay").text(currentDay.format("dddd, MMMM Do"));
 var currentHour = currentDay.hours();
 
 // store array of items to save and load later
-var times = [
-    {
-        time: 9,
-        task: 'Edit Time Slot'
-    },
-    {
-        time: 10,
-        task: 'Edit Time Slot'
-    },
-    {
-        time: 11,
-        task: 'Edit Time Slot'
-    },
-    {
-        time: 12,
-        task: 'Edit Time Slot'
-    },
-    {
-        time: 13,
-        task: 'Edit Time Slot'
-    },
-    {
-        time: 14,
-        task: 'Edit Time Slot'
-    },
-    {
-        time: 15,
-        task: 'Edit Time Slot'
-    },
-    {
-        time: 16,
-        task: 'Edit Time Slot'
-    },
-    {
-        time: 17,
-        task: 'Edit Time Slot'
-    }
-];
+var times = [];
 // store value to append time blocks to 
 var blockContainerEl = $("#block-container");
 
@@ -98,6 +61,7 @@ var displayTimeBlocks = function() {
         var currentTimeBlock = $("#row-" + (i + 1).toString());
         currentTimeBlock.text(taskDesc);
         // check the hour to update color of time block
+        console.log("hourBlock: " + hourBlock + " currentHour: " + currentHour);
         if(hourBlock < currentHour) {
             currentTimeBlock.parent().addClass("past");
         } else if (hourBlock > currentHour) {
@@ -108,13 +72,69 @@ var displayTimeBlocks = function() {
 
     }
 }
-
+// Save the data
 var saveTimes = function() {
     localStorage.setItem("times", JSON.stringify(times));
 }
 
-var loadTime = function() {
+// Load the data from local storage
+var loadTimes = function() {
+    // parse the localstorage into a usable array
+    times = JSON.parse(localStorage.getItem("times"));
+
+    // if nothing in localStorage, create new array as default
+    if(!times) {
+        times = [
+            {
+                time: 9,
+                task: 'Edit Time Slot'
+            },
+            {
+                time: 10,
+                task: 'Edit Time Slot'
+            },
+            {
+                time: 11,
+                task: 'Edit Time Slot'
+            },
+            {
+                time: 12,
+                task: 'Edit Time Slot'
+            },
+            {
+                time: 13,
+                task: 'Edit Time Slot'
+            },
+            {
+                time: 14,
+                task: 'Edit Time Slot'
+            },
+            {
+                time: 15,
+                task: 'Edit Time Slot'
+            },
+            {
+                time: 16,
+                task: 'Edit Time Slot'
+            },
+            {
+                time: 17,
+                task: 'Edit Time Slot'
+            }
+        ];
+    }
+
+    // display the corresponding descriptions to each time block
+    for(var i = 0; i < times.length; i++) {
+        var currTask = times[i].task;
+        var corrDesc = $("#row-" + (i + 1).toString());
+        corrDesc.text(currTask);
+
+        console.log(currTask);
+    }
+
 
 }
 
+loadTimes();
 displayTimeBlocks();
