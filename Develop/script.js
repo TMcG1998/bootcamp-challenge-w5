@@ -61,7 +61,6 @@ var displayTimeBlocks = function() {
         var currentTimeBlock = $("#row-" + (i + 1).toString());
         currentTimeBlock.text(taskDesc);
         // check the hour to update color of time block
-        console.log("hourBlock: " + hourBlock + " currentHour: " + currentHour);
         if(hourBlock < currentHour) {
             currentTimeBlock.parent().addClass("past");
         } else if (hourBlock > currentHour) {
@@ -72,6 +71,27 @@ var displayTimeBlocks = function() {
 
     }
 }
+
+// used to periodically check times, remove color-related class and then add them back
+var checkTime = function() {
+    console.log("working");
+    for(var i = 0; i < times.length; i++) {
+        var hourBlock = times[i].time;
+        var currentTimeBlock = $("#row-" + (i + 1).toString());
+        currentTimeBlock.parent().removeClass("past future present");
+
+        if(hourBlock < currentHour) {
+            currentTimeBlock.parent().addClass("past");
+        } else if (hourBlock > currentHour) {
+            currentTimeBlock.parent().addClass("future");
+        } else {
+            currentTimeBlock.parent().addClass("present");
+        }
+    }
+}
+
+setInterval(checkTime, 300000);
+
 // Save the data
 var saveTimes = function() {
     localStorage.setItem("times", JSON.stringify(times));
@@ -132,9 +152,10 @@ var loadTimes = function() {
 
         console.log(currTask);
     }
-
-
 }
 
+// load from the local storage, then display the information we got 
+// as mentioned in the loadTimes function, if nothing is retrieved we will
+// display a default state
 loadTimes();
 displayTimeBlocks();
