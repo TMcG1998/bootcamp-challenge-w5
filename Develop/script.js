@@ -90,7 +90,7 @@ var checkTime = function() {
     }
 }
 
-setInterval(checkTime, 300000);
+setInterval(checkTime, 60000);
 
 // Save the data
 var saveTimes = function() {
