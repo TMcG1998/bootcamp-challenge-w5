@@ -90,6 +90,7 @@ var checkTime = function() {
     }
 }
 
+// check to update the time blocks every minute
 setInterval(checkTime, 60000);
 
 // Save the data
